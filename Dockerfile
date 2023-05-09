@@ -1,13 +1,15 @@
-FROM lonylly/adx2:latest
+FROM python:3.10-slim-buster
 
-# نسخ رابط السورس 
-RUN git clone https://github.com/DRACULA-22/svillethon2.git /root/userbot
-# اخـراج العـمل 
-WORKDIR /root/userbot
+WORKDIR /app
 
-# لتنـزيل اضافات السورس
-RUN pip3 install -U -r resources/setup/requirements.txt
+RUN apt-get -y update
 
-ENV PATH="/home/userbot/resources/setup/bin:$PATH"
+RUN apt-get -y install git gcc python3-dev
 
-CMD ["python3","-m","userbot"]
+COPY requirements.txt requirements.txt
+
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+CMD python3 -m userbot
